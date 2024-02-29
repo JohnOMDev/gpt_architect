@@ -9,16 +9,9 @@ Created on Tue Feb 27 07:32:40 2024
 import torch
 import tiktoken
 import pickle
-import argparse
 from model import BigramLanguageModel
 from dataclasses import dataclass
-
-# from train import BigramLanguageModel
-
-parser = argparse.ArgumentParser(description='Mini GPT')
-
-args = parser.parse_args()
-
+import sys
 device ='cuda' if torch.cuda.is_available() else 'cpu'
 
 torch.manual_seed(1337)
@@ -55,6 +48,7 @@ def get_response(prompt):
     print(enc.decode(m.generate(context, max_new_tokens=100)[0].tolist()))
 
 if __name__ == "__main__":
+    prompt =sys.argv[1]
     prompt = input("Prompt:\n")
     chars=sorted(list(set(prompt)))
     enc =tiktoken.get_encoding('gpt2')  
