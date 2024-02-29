@@ -49,10 +49,7 @@ def get_response(prompt):
 
 if __name__ == "__main__":
     prompt =sys.argv[1]
-    prompt = input("Prompt:\n")
-    chars=sorted(list(set(prompt)))
     enc =tiktoken.get_encoding('gpt2')  
-    
     # generate from the model
     context = torch.zeros(enc.encode_ordinary(prompt), dtype=torch.long, device=device)
     get_response(context)
