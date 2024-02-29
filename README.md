@@ -52,7 +52,3 @@ Contributions to KleineGPT are welcome! Whether you want to add new features, fi
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to customize this template according to your specific project details and requirements.
