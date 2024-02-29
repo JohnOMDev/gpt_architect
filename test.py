@@ -37,7 +37,7 @@ class GPTConfig:
 
 
 
-def get_response(prompt):
+def get_response(context):
     # encoding with tiktoken
     config = GPTConfig()
     model = BigramLanguageModel(config)
