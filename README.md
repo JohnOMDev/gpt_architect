@@ -13,7 +13,7 @@ KleineGPT is a minimalistic implementation of the Generative Pre-trained Transfo
 To install KleineGPT, simply clone this repository:
 
 ```bash
-git clone https://github.com/JohnOMDev/gpt_architect.git
+git clone https://github.com/JohnOMDev/kleineGPT.git
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ For detailed instructions and examples, refer to the documentation provided in t
 ```python
 # Example code snippet demonstrating how to use KleineGPT for text generation
 
-git clone https://github.com/JohnOMDev/gpt_architect.git
+git clone https://github.com/JohnOMDev/kleineGPT.git
 
 cd gpt_architect
 
@@ -39,7 +39,7 @@ python train.py
 # After training a pretrained model will be saved in the folder
 
 # Generate text based on a prompt
-# prompt = "I enjoyed the crispy chicken at KFC because"
+# prompt = "Bad Order"
 
 python test.py "I enjoyed the crispy chicken at KFC because"
 
