@@ -5,7 +5,7 @@ Created on Tue Feb 27 07:32:40 2024
 
 @author: johnomole
 """
-
+import io
 import torch
 import tiktoken
 import pickle
@@ -21,19 +21,24 @@ torch.manual_seed(1337)
 @dataclass
 class GPTConfig:
     block_size: int = 64
-    batch_size:int = 256
+    batch_size:int = 100
     vocab_size: int = 50304 # GPT-2 vocab_size of 50257, padded up to nearest multiple of 64 for efficiency
-    n_layer: int = 2
-    n_head: int = 2
+    n_layer: int = 6
+    n_head: int = 6
     n_embd: int = 384
     dropout: float = 0.2
-    learning_rate:float = 3e-4
-    max_iters:int = 1000
+    learning_rate:float = 3e-2
+    max_iters:int = 5000
     eval_iters:int = 384
-    eval_interval:int = 250
-    bias: bool = True # True: bias in Linears and LayerNorms, like GPT-2. False: a bit better and faster
+    eval_interval:int = 1000
 
 
+
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
+        else: return super().find_class(module, name)
 
 
 
@@ -42,16 +47,18 @@ def get_response(context):
     config = GPTConfig()
     model = BigramLanguageModel(config)
     with open("model-gpt-01.pkl", 'rb') as f:
-        model = pickle.load(f)
+        model = CPU_Unpickler(f).load()
     
     m =model.to(device)
-    print(enc.decode(m.generate(context, max_new_tokens=100)[0].tolist()))
+    
+    print(enc.decode(m.generate(context.unsqueeze(0), max_new_tokens=100)[0].tolist()))
 
 if __name__ == "__main__":
     prompt =sys.argv[1]
-    enc =tiktoken.get_encoding('gpt2')  
+    # prompt = "I enjoyed the crispy chicken at KFC because"
+    enc =tiktoken.get_encoding('gpt2')
     # generate from the model
-    context = torch.zeros(enc.encode_ordinary(prompt), dtype=torch.long, device=device)
+    context = torch.tensor(enc.encode_ordinary(prompt), dtype=torch.long, device=device)
     get_response(context)
     
         
